@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import TypeDescription from "./typeDescr/TypeDecription";
 
 const Application = () => {
+    const [damage, setDamage] = useState(false);
+    const [damageList, setDamageList] = useState({
+        species: [],
+        water: [],
+        soil: [],
+    });
+
     return (
         <main>
             <div className="container">
@@ -13,34 +21,42 @@ const Application = () => {
                 <div className="content">
                     <form action="">
                         {/* IMPORTANT When disable input, put class .disabled in the .form-item class */}
-                        <div className="form-item">
-                            <div className="radio-buttons">
-                                <div className="radio-button-box">
-                                    <input type="radio" id="menace" name="menace" />
-                                    <label htmlFor="menace"> Непосредствената заплаха за екологични щети </label>
-                                </div>
-                                <div className="radio-button-box">
-                                    <input type="radio" id="damage" name="damage" />
-                                    <label htmlFor="damage"> Причинени екологични щети </label>
-                                </div>
-                            </div>
+                        <div className="form-check form-check-inline">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                id="menace"
+                                name="menace"
+                                checked={!damage}
+                                onChange={(e) => {
+                                    console.log("e", e);
+                                    setDamage(false);
+                                }}
+                            />
+                            <label htmlFor="menace" className="form-check-label">
+                                Непосредствената заплаха за екологични щети
+                            </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                id="damage"
+                                name="damage"
+                                checked={damage}
+                                onChange={() => setDamage(true)}
+                            />
+                            <label htmlFor="damage" className="form-check-label">
+                                Причинени екологични щети
+                            </label>
                         </div>
 
-                        <div className="form-item">
-                            <label htmlFor="type">
-                                Вид на непосредствената заплаха за екологични щети или на причинените
-                                екологични щети
-                            </label>
-                            <div className="select">
-                                <select id="type" name="type">
-                                    <option value="title">Изберете</option>
-                                    <option value="loc">върху защитени видове и местообитания</option>
-                                    <option value="loc">върху водите</option>
-                                    <option value="loc">върху почвите</option>
-                                </select>
-                            </div>
-                            <textarea id="type-descr" name="type-descr" placeholder="Описание"></textarea>
-                        </div>
+                        <TypeDescription
+                            damage={!damage ? "непосредствената заплаха за" : "причинените"}
+                            damageList={damageList}
+                            setDamageList={setDamageList}
+                        />
+                        {console.log('damageList', damageList)}
                         <div className="form-item">
                             <label htmlFor="start-date">
                                 Дата на възникване на непосредствената заплаха за екологични щети или на
@@ -291,4 +307,3 @@ const Application = () => {
 };
 
 export default Application;
-

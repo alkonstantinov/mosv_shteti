@@ -103,7 +103,7 @@ fieldset legend {
     display: block;
     margin-bottom: 10px;
     font-weight: lighter; }
-  .form-item .radio-buttons {
+  /* .form-item .radio-buttons {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -120,7 +120,7 @@ fieldset legend {
   .form-item .radio-button-box {
     margin-right: 10px; }
     .form-item .radio-button-box label {
-      display: inline; }
+      display: inline; } */
   .form-item.disabled {
     pointer-events: none; }
     .form-item.disabled .select {
@@ -336,6 +336,10 @@ footer {
   width: 100%;
   margin-top: 80px;
   overflow: hidden;
+}
+
+.form-check-input {
+  margin-top: 0.5em;
 }
 
 input:invalid+span:after {
