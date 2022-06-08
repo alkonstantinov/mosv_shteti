@@ -10,13 +10,9 @@ const TypeDescription = ({ damage, damageList, setDamageList }) => {
     const [soilDamageList, setSoilDamageList] = useState(damageList.soil);
 
     const open = (option) => {
-        // if (option === typeOption) {
-        //     setTypeOption("");
-        // } else {
         setTypeOption(option);
-        // }
     };
-    console.log("speciesDamageList", speciesDamageList);
+    
     const addToList = (listType) => {
         switch (listType) {
             case "onspecies":
@@ -72,7 +68,7 @@ const TypeDescription = ({ damage, damageList, setDamageList }) => {
         <div className="form-item">
             <label htmlFor="type">{`Вид на ${damage} екологични щети`}</label>
             <div className="row">
-                <div className="col-xs-12 col-md-4">
+                <div id="type-descr" className="col-xs-12 col-md-4">
                     върху защитени видове и местообитания{" "}
                     {typeOption === "onspecies" ? (
                         <>
@@ -115,7 +111,7 @@ const TypeDescription = ({ damage, damageList, setDamageList }) => {
                         </ul>
                     )}
                 </div>
-                <div className="col-xs-12 col-md-4">
+                <div id="type-descr" className="col-xs-12 col-md-4">
                     върху водите{" "}
                     {typeOption === "onwater" ? (
                         <>
@@ -158,7 +154,7 @@ const TypeDescription = ({ damage, damageList, setDamageList }) => {
                         </ul>
                     )}
                 </div>
-                <div className="col-xs-12 col-md-4">
+                <div id="type-descr" className="col-xs-12 col-md-4">
                     върху почвите{" "}
                     {typeOption === "onsoil" ? (
                         <>

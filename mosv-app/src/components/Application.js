@@ -56,7 +56,7 @@ const Application = () => {
                             damageList={damageList}
                             setDamageList={setDamageList}
                         />
-                        {console.log('damageList', damageList)}
+                        
                         <div className="form-item">
                             <label htmlFor="start-date">
                                 Дата на възникване на непосредствената заплаха за екологични щети или на

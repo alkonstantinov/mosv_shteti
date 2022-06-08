@@ -351,3 +351,19 @@ input:valid+span:after {
   content: '✓';
   padding-left: 5px;
 }
+
+#type-descr {
+  border-right: 1px solid #838383;
+}
+#type-descr:nth-child(3){
+  border-right: none;
+}
+@media only screen and (max-width: 768px) {
+  #type-descr {
+    border-right: none;
+    border-bottom: 1px solid #838383;
+  }
+  #type-descr:nth-child(3){
+    border-bottom: none;
+  }
+}
