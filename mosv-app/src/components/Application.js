@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import TypeDescription from "./typeDescr/TypeDecription";
+import Calendar from "../controls/Calendar";
+import SelectControl from "../controls/SelectControl";
+import translations from "../utils/translations";
+import TextControl from "../controls/TextControl";
+import CourtCases from "./courtCases/CourtCases";
 
 const Application = () => {
     const [damage, setDamage] = useState(false);
@@ -8,9 +13,28 @@ const Application = () => {
         water: [],
         soil: [],
     });
-    const [appearanceDate, setAppearanceDate] = useState(new Date().toISOString().slice(0, 10));
+    const [appearanceDate, setAppearanceDate] = useState(new Date());
+    const [procedureDate, setProcedureDate] = useState(new Date());
+    const [activity, setActivity] = useState("");
+    const [applicant, setApplicant] = useState("");
+    const [kid, setKid] = useState("");
+    const [courtCases, setCourtCases] = useState([]);
+    const [preventResultsList, setPreventResultsList] = useState({
+        species: [],
+        water: [],
+        soil: [],
+    });
+    const [removalResultsList, setRemovalResultsList] = useState({
+        species: [],
+        water: [],
+        soil: [],
+    });
+    const [endDate, setEndDate] = useState(new Date());
 
     let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
+
+    // console.log("kid", kid);
+    console.log("damageList", damageList);
     return (
         <main>
             <div className="container">
@@ -51,6 +75,8 @@ const Application = () => {
                         </div>
 
                         <TypeDescription
+                            name="type"
+                            title={`Вид на ${damage} екологични щети`}
                             damage={isMenace}
                             damageList={damageList}
                             setDamageList={setDamageList}
@@ -60,188 +86,94 @@ const Application = () => {
                             <label htmlFor="start-date">
                                 {`Дата на възникване на ${isMenace} екологични щети и/или датата, на която това е установено`}
                             </label>
-
-                            <input
-                                type="date"
-                                // lang="bg-BG"
+                            <Calendar
                                 id="start-date"
-                                name="start-date"
                                 value={appearanceDate}
-                                min="2000-01-01"
-                                max="2999-12-31"
-                                placeholder="dd-mm-yyyy"
-                                onChange={(e) => setAppearanceDate(e.target.value)}
+                                setValue={setAppearanceDate}
+                                locale="bg"
                             />
                         </div>
+
+                        <SelectControl
+                            name="type"
+                            title={`Дейност съгласно приложение № 1, в резултат на която ${
+                                damage ? "са" : "е възникнала"
+                            }
+                                ${isMenace} екологични щети`}
+                            listObject={translations.activities}
+                            placeHolder="Изберете"
+                            value={activity}
+                            setValue={setActivity}
+                        />
+
                         <div className="form-item">
-                            <label htmlFor="type">
-                                Дейност съгласно приложение № 1, в резултат на която е възникнала
-                                непосредствената заплаха за екологични щети или са причинени екологични щети
+                            <label htmlFor="procedure-date">
+                                {`Дата, на която е започнала процедура за предотвратяване или отстраняване на
+                                ${isMenace} екологични щети`}
                             </label>
-                            <div className="select">
-                                <select id="type" name="type">
-                                    <option value="title">Изберете</option>
-                                    <option value="1">
-                                        Експлоатация на инсталации и съоръжения, за които се изисква издаване
-                                        на комплексно разрешително по чл. 117 от ЗООС
-                                    </option>
-                                    <option value="2">
-                                        За дейности по събиране, транспортиране, оползотворяване или
-                                        обезвреждане на отпадъци
-                                    </option>
-                                    <option value="3">
-                                        Извършване на дейности по използване на водите и водните обекти
-                                    </option>
-                                    <option value="4">
-                                        Извършване на дейности по производство, употреба, съхранение,
-                                        обработка, пълнене и изпускане в околната среда на химични вещества и
-                                        смеси
-                                    </option>
-                                    <option value="5">
-                                        Извършване на дейности по производство, употреба, съхранение,
-                                        обработка, пълнене и изпускане в околната среда на продукти за
-                                        растителна защита
-                                    </option>
-                                    <option value="6">
-                                        Извършване на дейности по производство, употреба, съхранение,
-                                        обработка, пълнене и изпускане в околната среда на биоциди
-                                    </option>
-                                    <option value="7">
-                                        Извършване на дейности по превоз на опасни товари
-                                    </option>
-                                    <option value="8">
-                                        Извършване на дейности по работа с генетично модифицирани организми
-                                        (ГМО)
-                                    </option>
-                                    <option value="9">
-                                        Извършване на дейности по превоз на отпадъци, в т.ч. внос, износ и
-                                        транзит на отпадъци
-                                    </option>
-                                    <option value="10">
-                                        Извършване на дейности по управление на минните отпадъци
-                                    </option>
-                                    <option value="11">
-                                        Експлоатация на места за съхранение в съответствие със Закона за
-                                        съхранение на въглероден диоксид в земните недра
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="start date">
-                                Дата, на която е започнала процедура за предотвратяване или отстраняване на
-                                непосредствена заплаха за екологични щети или на причинените екологични щети
-                            </label>
-                            <input
-                                type="date"
-                                lang="bg-BG"
-                                id="start date"
-                                name="start date"
-                                value="2022-01-01"
-                                min="2000-01-01"
-                                max="2999-12-31"
+                            <Calendar
+                                id="procedure-date"
+                                value={procedureDate}
+                                setValue={setProcedureDate}
+                                locale="bg"
                             />
                         </div>
-                        <div className="form-item">
-                            <label htmlFor="applicant">
-                                Заявител на процедурата по предотвратяване или отстраняване на непосредствена
-                                заплаха за екологични щети или на причинени екологични щети - отговорен
-                                оператор, компетентен орган или представител на обществеността
-                            </label>
-                            <input type="text" id="applicant" name="applicant" placeholder="Заявител" />
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="kid2008">
-                                Класификационен код по Класификацията на икономическите дейности на
-                                Националния статистически институт на дейността, в резултат на която е
-                                настъпила екологичната щета
-                            </label>
-                            <div className="select">
-                                <select id="kid2008" name="kid2008">
-                                    <option value="title">Изберете класификационен код по КИД-2008</option>
-                                    <option value="location1">Черна металургия</option>
-                                    <option value="location1">Военна промишленост</option>
-                                    <option value="location1">Корабоплаване</option>
-                                    <option value="location1">Транспорт и логистика</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="court-proceedings">
-                                Образувани досъдебни производства или съдебни дела във връзка с непосредствена
-                                заплаха за екологични щети или с причинени екологични щети
-                            </label>
-                            <input
-                                type="text"
-                                id="court-proceedings"
-                                name="court-proceedings"
-                                placeholder="Образувани производства или дела"
-                            />
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="proceedings-results">
-                                Резултат от досъдебните производства или съдебните дела
-                            </label>
-                            <input
-                                type="text"
-                                id="proceedings-results"
-                                name="proceedings-results"
-                                placeholder="Резултати от досъдебните производства или съдебните дела"
-                            />
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="prevention-result">
-                                Резултат от процедурата по предотвратяване на непосредствената заплаха за
-                                екологични щети или на екологичните щети
-                            </label>
-                            <div className="select">
-                                <select id="prevention-result" name="prevention-result">
-                                    <option value="title">Изберете</option>
-                                    <option value="loc">върху защитени видове и местообитания</option>
-                                    <option value="loc">върху водите</option>
-                                    <option value="loc">върху почвите</option>
-                                </select>
-                            </div>
-                            <textarea
-                                id="prevention-result-descr"
-                                name="prevention-result-descr"
-                                placeholder="Описание"
-                            ></textarea>
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="removal-result">
-                                Резултат от процедурата по отстраняване на непосредствената заплаха за
-                                екологични щети или на екологичните щети
-                            </label>
-                            <div className="select">
-                                <select id="removal-result" name="removal-result">
-                                    <option value="title">Изберете</option>
-                                    <option value="loc">върху защитени видове и местообитания</option>
-                                    <option value="loc">върху водите</option>
-                                    <option value="loc">върху почвите</option>
-                                </select>
-                            </div>
-                            <textarea
-                                id="removal-result-descr"
-                                name="removal-result-descr"
-                                placeholder="Описание"
-                            ></textarea>
-                        </div>
+
+                        <TextControl
+                            name="applicant"
+                            title={`Заявител на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети - отговорен
+                            оператор, компетентен орган или представител на обществеността`}
+                            placeHolder="Заявител - отговорен оператор, компетентен орган или представител на обществеността"
+                            value={applicant}
+                            setValue={setApplicant}
+                        />
+
+                        <SelectControl
+                            name="kid2008"
+                            title={`Класификационен код по Класификацията на икономическите дейности на
+                            Националния статистически институт на дейността, в резултат на която е
+                            настъпила екологичната щета`}
+                            listObject={translations.kid}
+                            placeHolder="Изберете класификационен код по КИД-2008"
+                            value={kid}
+                            setValue={setKid}
+                        />
+
+                        <CourtCases 
+                            name="court-proceedings"
+                            title={`Образувани досъдебни производства или съдебни дела във връзка с ${isMenace} екологични щети`}
+                            courtCases={courtCases}
+                            setCourtCases={setCourtCases}
+                        />
+
+                        <TypeDescription
+                            name="prevention-result"
+                            title={`Резултат от процедурата по предотвратяване на ${isMenace} екологичните щети`}
+                            damage={isMenace}
+                            damageList={preventResultsList}
+                            setDamageList={setPreventResultsList}
+                        />
+                        
+                        <TypeDescription
+                            name="removal-result"
+                            title={`Резултат от процедурата по отстраняване на ${isMenace} екологичните щети`}
+                            damage={isMenace}
+                            damageList={removalResultsList}
+                            setDamageList={setRemovalResultsList}
+                        />
+                        
                         <div className="form-item">
                             <label htmlFor="end-date">
-                                Дата на приключване на процедурата по предотвратяване или отстраняване на
-                                непосредствената заплаха за екологични щети или на причинените екологични щети
+                                {`Дата на приключване на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети`}
                             </label>
-                            <input
-                                type="date"
-                                lang="bg-BG"
+                            <Calendar
                                 id="end-date"
-                                name="end-date"
-                                value="2022-01-01"
-                                min="2000-01-01"
-                                max="2999-12-31"
+                                value={endDate}
+                                setValue={setEndDate}
+                                locale="bg"
                             />
                         </div>
+                        
                         <div className="form-item">
                             <label htmlFor="costs">
                                 Разходи за съответните превантивни или оздравителни мерки

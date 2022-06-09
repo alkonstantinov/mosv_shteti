@@ -30,7 +30,7 @@ const TypeDescrElement = ({ damage, typeOption, setTypeOption, option, setAllDam
             {textElement}{" "}
             {typeOption === option ? (
                 <>
-                    <i className="fa-solid fa-circle-xmark fa-lg" onClick={() => open("")}></i>
+                    <i className="fa-solid fa-circle-xmark fa-lg" onClick={() => { open(""); setDescription(""); }}></i>
                     <div className="row align-items-center">
                         <div className="col-10">
                             <div className="form-item">

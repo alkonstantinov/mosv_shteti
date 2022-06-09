@@ -368,12 +368,12 @@ input:valid+span:after {
   }
 }
 
-input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
+/* input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
   color: #fff;
   position: relative;
-}
+} */
 
-input[type="date"]::-webkit-datetime-edit-year-field{
+/* input[type="date"]::-webkit-datetime-edit-year-field{
   position: absolute !important;
   border-left:1px solid #8c8c8c;
   padding: 2px;
@@ -396,4 +396,27 @@ input[type="date"]::-webkit-datetime-edit-day-field{
   padding: 2px;
   left: 4px;
   
+} */
+.mini {
+  font-size: 1rem;
+}
+
+.red {
+  color: red;
+}
+
+hr:not([size]) {
+  height: 1px;
+  border: 1px solid;
+  margin-top: 10px;
+}
+
+.react-datepicker__tab-loop {
+  z-index: 2;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+  transform: translate3d(160.889px, 0px, 0px) !important;
+}
+.react-datepicker__input-container input[type="text"] {
+  width: 100% !important;
 }
