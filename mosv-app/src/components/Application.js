@@ -8,7 +8,9 @@ const Application = () => {
         water: [],
         soil: [],
     });
+    const [appearanceDate, setAppearanceDate] = useState(new Date().toISOString().slice(0, 10));
 
+    let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
     return (
         <main>
             <div className="container">
@@ -28,10 +30,7 @@ const Application = () => {
                                 id="menace"
                                 name="menace"
                                 checked={!damage}
-                                onChange={(e) => {
-                                    console.log("e", e);
-                                    setDamage(false);
-                                }}
+                                onChange={() => setDamage(false)}
                             />
                             <label htmlFor="menace" className="form-check-label">
                                 Непосредствената заплаха за екологични щети
@@ -52,25 +51,26 @@ const Application = () => {
                         </div>
 
                         <TypeDescription
-                            damage={!damage ? "непосредствената заплаха за" : "причинените"}
+                            damage={isMenace}
                             damageList={damageList}
                             setDamageList={setDamageList}
                         />
-                        
+
                         <div className="form-item">
                             <label htmlFor="start-date">
-                                Дата на възникване на непосредствената заплаха за екологични щети или на
-                                причинените екологични щети и/или датата, на която това е установено
+                                {`Дата на възникване на ${isMenace} екологични щети и/или датата, на която това е установено`}
                             </label>
 
                             <input
                                 type="date"
-                                lang="bg-BG"
+                                // lang="bg-BG"
                                 id="start-date"
                                 name="start-date"
-                                value="2022-01-01"
+                                value={appearanceDate}
                                 min="2000-01-01"
                                 max="2999-12-31"
+                                placeholder="dd-mm-yyyy"
+                                onChange={(e) => setAppearanceDate(e.target.value)}
                             />
                         </div>
                         <div className="form-item">
