@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TypeDescrElement from "./TypeDescrElement";
 
-const TypeDescription = ({ title, name, damage, damageList, setDamageList }) => {
+const TypeDescription = ({ title, name, damage, damageList, setDamageList, resultsType }) => {
     const [typeOption, setTypeOption] = useState("");
 
     let allDamagesList = Object.keys(damageList);
@@ -17,6 +17,7 @@ const TypeDescription = ({ title, name, damage, damageList, setDamageList }) => 
                             typeOption={typeOption}
                             setTypeOption={setTypeOption}
                             option={x}
+                            isResults={resultsType}
                             allDamagesList={damageList}
                             setAllDamagesList={setDamageList}
                         />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import translations from "../../utils/translations";
 
-const TypeDescrElement = ({ damage, typeOption, setTypeOption, option, setAllDamagesList, allDamagesList }) => {
+const TypeDescrElement = ({ damage, typeOption, setTypeOption, option, setAllDamagesList, allDamagesList, isResults }) => {
     const [description, setDescription] = useState("");
     const [damageList, setDamageList] = useState(allDamagesList[option]);
     const textElement = translations.types[option]
@@ -38,7 +38,7 @@ const TypeDescrElement = ({ damage, typeOption, setTypeOption, option, setAllDam
                                     id="type-descr"
                                     name="type-descr"
                                     rows="3"
-                                    placeholder={`Описание на ${damage} екологични щети ${textElement}`}
+                                    placeholder={`Описание${isResults ? isResults : ""} на ${damage} екологични щети ${textElement}`}
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                 ></textarea>

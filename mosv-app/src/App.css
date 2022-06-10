@@ -21,12 +21,16 @@ fieldset {
   /* margin: 2%; */
   padding: 2%;
   border: solid 2px;
-  border-color: #0c2b90;
-  border-radius: 6px;    
+  border-color: #1010112e;
+  /* border-radius: 6px;     */
 }
 
 fieldset label {
   font-size: 1rem;
+}
+
+textarea {
+  resize: none;
 }
 
 fieldset legend {

@@ -5,6 +5,9 @@ import SelectControl from "../controls/SelectControl";
 import translations from "../utils/translations";
 import TextControl from "../controls/TextControl";
 import CourtCases from "./courtCases/CourtCases";
+import NumControl from "../controls/NumControl";
+import TextareaControl from "../controls/TextareaControl";
+import CheckControl from "../controls/CheckContorl";
 
 const Application = () => {
     const [damage, setDamage] = useState(false);
@@ -30,11 +33,30 @@ const Application = () => {
         soil: [],
     });
     const [endDate, setEndDate] = useState(new Date());
+    const [paidCosts, setPaidCosts] = useState(0);
+    const [reimbursedCosts, setReimbursedCosts] = useState(0);
+    const [unpaidCosts, setUnpaidCosts] = useState(0);
+    const [unpaidCostsDescription, setUnpaidCostsDescription] = useState("");
+    const [paymentSourceOperator, setPaymentSourceOperator] = useState(true);
+    const [paymentSource, setPaymentSource] = useState("");
+    const [financialAssuranceUsed, setFinancialAssuranceUsed] = useState(false);
+    const [financialAssurance, setFinancialAssurance] = useState([false, false, false, false]);
+    const [admCosts, setAdmCosts] = useState(0);
+    const [others, setOthers] = useState("");
 
     let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
 
+    const financialAssuranceHandler = (v, idx) => {
+        financialAssurance[idx] = v;
+        setFinancialAssurance([...financialAssurance]);
+    };
     // console.log("kid", kid);
-    console.log("damageList", damageList);
+
+    const SubmitHandler = (e) => {
+        e.preventDefault();
+
+        console.log(e);
+    }
     return (
         <main>
             <div className="container">
@@ -76,7 +98,7 @@ const Application = () => {
 
                         <TypeDescription
                             name="type"
-                            title={`Вид на ${damage} екологични щети`}
+                            title={`Вид на ${isMenace} екологични щети`}
                             damage={isMenace}
                             damageList={damageList}
                             setDamageList={setDamageList}
@@ -139,7 +161,7 @@ const Application = () => {
                             setValue={setKid}
                         />
 
-                        <CourtCases 
+                        <CourtCases
                             name="court-proceedings"
                             title={`Образувани досъдебни производства или съдебни дела във връзка с ${isMenace} екологични щети`}
                             courtCases={courtCases}
@@ -150,18 +172,20 @@ const Application = () => {
                             name="prevention-result"
                             title={`Резултат от процедурата по предотвратяване на ${isMenace} екологичните щети`}
                             damage={isMenace}
+                            resultsType={" на резултатите от процедурата по предотвратяване"}
                             damageList={preventResultsList}
                             setDamageList={setPreventResultsList}
                         />
-                        
+
                         <TypeDescription
                             name="removal-result"
                             title={`Резултат от процедурата по отстраняване на ${isMenace} екологичните щети`}
                             damage={isMenace}
+                            resultsType={" на резултатите от процедурата по отстраняване"}
                             damageList={removalResultsList}
                             setDamageList={setRemovalResultsList}
                         />
-                        
+
                         <div className="form-item">
                             <label htmlFor="end-date">
                                 {`Дата на приключване на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети`}
@@ -171,65 +195,124 @@ const Application = () => {
                                 value={endDate}
                                 setValue={setEndDate}
                                 locale="bg"
+                                min={procedureDate}
                             />
                         </div>
-                        
+
                         <div className="form-item">
                             <label htmlFor="costs">
-                                Разходи за съответните превантивни или оздравителни мерки
+                                Разходи за съответните превантивни или оздравителни мерки:
                             </label>
-                            <input
-                                type="number"
-                                id="costs-paid"
-                                name="costs-paid"
-                                step="0.01"
-                                placeholder="заплатени пряко от отговорните страни"
-                            />
-                            {/* <span className="validity"></span> */}
-                            <input
-                                type="number"
-                                id="costs-reimbursed"
-                                name="costs-reimbursed"
-                                step="0.01"
-                                placeholder="възстановени впоследствие от отговорните страни"
-                            />
-                            <input
-                                type="number"
-                                id="costs-unpaid"
-                                name="costs-unpaid"
-                                step="0.01"
-                                placeholder="невъзстановени от отговорните страни, като се посочват причините за невъзстановяването"
-                            />
-                            {/* <span className="validity"></span> */}
-                            <textarea
-                                id="costs-descr"
-                                name="costs-descr"
-                                placeholder="Причини за невъзстановяването"
-                            ></textarea>
+                            <fieldset>
+                                <NumControl
+                                    title={"- Заплатени пряко от отговорните страни"}
+                                    name="costs-paid"
+                                    mini
+                                    placeHolder={"Сума заплатена пряко от отговорните страни"}
+                                    value={paidCosts}
+                                    setValue={setPaidCosts}
+                                />
+                                <NumControl
+                                    title={"- Възстановени впоследствие от отговорните страни"}
+                                    name="costs-reimbursed"
+                                    mini
+                                    placeHolder={"Сума възстановена впоследствие от отговорните страни"}
+                                    value={reimbursedCosts}
+                                    setValue={setReimbursedCosts}
+                                />
+                                <NumControl
+                                    title={
+                                        "- Невъзстановени от отговорните страни, като се посочват причините за невъзстановяването"
+                                    }
+                                    name="costs-unpaid"
+                                    mini
+                                    placeHolder={
+                                        "Сума невъзстановена от отговорните страни, като се посочват причините за невъзстановяването"
+                                    }
+                                    value={unpaidCosts}
+                                    setValue={setUnpaidCosts}
+                                />
+                                {unpaidCosts > 0 && (
+                                    <TextareaControl
+                                        id="costs-descr"
+                                        name="costs-descr"
+                                        placeholder="Причини за невъзстановяването"
+                                        value={unpaidCostsDescription}
+                                        setValue={setUnpaidCostsDescription}
+                                    />
+                                )}
+                            </fieldset>
                         </div>
+
                         <div className="form-item">
                             <label htmlFor="payment-source">Източник за заплащане на разходите</label>
-                            <input type="text" id="payment-source" name="payment-source" />
+                            <CheckControl
+                                name="payment-source"
+                                label="Отговорeн оператор"
+                                value={paymentSourceOperator}
+                                setValue={setPaymentSourceOperator}
+                            />
+                            {!paymentSourceOperator && (
+                                <TextControl
+                                    name="payment-source"
+                                    title="Други:"
+                                    mini
+                                    value={paymentSource}
+                                    setValue={setPaymentSource}
+                                    placeHolder="Описание на източниците на заплащане на разходите"
+                                />
+                            )}
                         </div>
                         <div className="form-item">
-                            <label htmlFor="add-payment-source">
+                            <label htmlFor="financial-assurance">
                                 Прилагане на финансово осигуряване от застраховка, банкова гаранция, ипотека
                                 или залог по чл. 43, 43а и 43б
                             </label>
-                            <input type="text" id="add-payment-source" name="add-payment-source" />
+                            <CheckControl
+                                name="financial-assurance"
+                                label="Да"
+                                value={financialAssuranceUsed}
+                                setValue={(e) => {
+                                    setFinancialAssuranceUsed(e);
+                                    setFinancialAssurance([false, false, false, false]);
+                                }}
+                            />
+                            {financialAssuranceUsed && (
+                                <fieldset>
+                                    {[
+                                        "от застраховка",
+                                        "от банкова гаранция",
+                                        "от ипотека върху недвижими имоти и/или вещни права върху тях",
+                                        "от залог върху вземания, движими вещи или ценни книжа",
+                                    ].map((x, idx) => (
+                                        <CheckControl
+                                            key={x + idx}
+                                            name={x}
+                                            label={x}
+                                            value={financialAssurance[idx]}
+                                            setValue={(v) => financialAssuranceHandler(v, idx)}
+                                        />
+                                    ))}
+                                </fieldset>
+                            )}
                         </div>
-                        <div className="form-item">
-                            <label htmlFor="adm-costs">
-                                Годишни административни разходи на компетентните органи по прилагане на закона
-                            </label>
-                            <input type="number" id="adm-costs" name="adm-costs" step="0.01" />
-                        </div>
-                        <div className="form-item">
-                            <label htmlFor="other-info">Друга информация</label>
-                            <textarea id="other-info" name="other-info"></textarea>
-                        </div>
+
+                        <NumControl
+                            name="adm-costs"
+                            title="Годишни административни разходи на компетентните органи по прилагане на закона"
+                            value={admCosts}
+                            setValue={setAdmCosts}
+                        />
+
+                        <TextareaControl
+                            id="other-info"
+                            name="other-info"
+                            title="Друга информация"
+                            value={others}
+                            setValue={setOthers}
+                        />
                         <div>
-                            <input type="submit" value="Вписване" />
+                            <input type="submit" value="Вписване" onClick={SubmitHandler}/>
                         </div>
                     </form>
                 </div>
