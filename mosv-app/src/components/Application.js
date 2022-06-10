@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TypeDescription from "./typeDescr/TypeDecription";
 import Calendar from "../controls/Calendar";
 import SelectControl from "../controls/SelectControl";
@@ -8,6 +8,7 @@ import CourtCases from "./courtCases/CourtCases";
 import NumControl from "../controls/NumControl";
 import TextareaControl from "../controls/TextareaControl";
 import CheckControl from "../controls/CheckContorl";
+import ServerRequest from "../http/ServerRequest";
 
 const Application = () => {
     const [damage, setDamage] = useState(false);
@@ -42,7 +43,9 @@ const Application = () => {
     const [financialAssuranceUsed, setFinancialAssuranceUsed] = useState(false);
     const [financialAssurance, setFinancialAssurance] = useState([false, false, false, false]);
     const [admCosts, setAdmCosts] = useState(0);
-    const [others, setOthers] = useState("");
+    const [other, setOther] = useState("");
+
+    const [kidMenu, setKidMenu] = useState([]);
 
     let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
 
@@ -51,12 +54,21 @@ const Application = () => {
         setFinancialAssurance([...financialAssurance]);
     };
     // console.log("kid", kid);
-
+    // !!!!!!!!!!!!!!!!!!!!!!!! add errors to some fields
     const SubmitHandler = (e) => {
         e.preventDefault();
 
-        console.log(e);
+        if (damage) {
+            console.log("Записване като причинени щети")
+        } else {
+            console.log("Записване като заплаха щети")
+        }
     }
+
+    console.log('kidMenu', kidMenu);
+    useEffect(() => {
+        ServerRequest().get("Kid/KIDGetAll", {}, setKidMenu);
+    }, []);
     return (
         <main>
             <div className="container">
@@ -308,8 +320,8 @@ const Application = () => {
                             id="other-info"
                             name="other-info"
                             title="Друга информация"
-                            value={others}
-                            setValue={setOthers}
+                            value={other}
+                            setValue={setOther}
                         />
                         <div>
                             <input type="submit" value="Вписване" onClick={SubmitHandler}/>

@@ -3,7 +3,9 @@ import React from "react";
 const NumControl  = ({ name, title, placeHolder, value, setValue, mini, disabled, errors, ...others }) => {
     const setValueHandler = (e) => {
         let str = e.target.value;
-        
+        if (Number(str) < 0) {
+            return;
+        }
         if (str !== "0") {
             let leadingChar = str[0];
             while (leadingChar === "0") {
@@ -25,6 +27,7 @@ const NumControl  = ({ name, title, placeHolder, value, setValue, mini, disabled
             <input
                 type="number"
                 step="0.01"
+                min="0"
                 id={name}
                 name={name}
                 placeholder={placeHolder}
