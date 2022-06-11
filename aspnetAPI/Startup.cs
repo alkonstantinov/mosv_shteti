@@ -29,6 +29,8 @@ namespace aspnetAPI
         {
             services.AddRazorPages();
             services.AddScoped<IKidRepo, KidRepo>();
+            services.AddScoped<IActivityTypeRepo, ActivityTypeRepo>();
+            services.AddScoped<IMainRepo, MainRepo>();
 
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson();
