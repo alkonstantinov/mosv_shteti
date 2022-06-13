@@ -3,7 +3,7 @@ import bg from "date-fns/locale/bg";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const Calendar = ({ value, setValue, locale, min, ...others }) => {
+const Calendar = ({ value, setValue, locale, min, error, ...others }) => {
     registerLocale("bg", bg);
     return (
         <DatePicker
@@ -16,6 +16,7 @@ const Calendar = ({ value, setValue, locale, min, ...others }) => {
             maxDate={new Date("2200/01/01")}
             showDisabledMonthNavigation
             showWeekNumbers
+            timeClassName={error && "text-error"}
             {...others}
         />
     );

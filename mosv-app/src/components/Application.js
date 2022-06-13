@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import TypeDescription from "./typeDescr/TypeDecription";
-import Calendar from "../controls/Calendar";
 import SelectControl from "../controls/SelectControl";
-import translations from "../utils/translations";
 import TextControl from "../controls/TextControl";
 import CourtCases from "./courtCases/CourtCases";
 import NumControl from "../controls/NumControl";
 import TextareaControl from "../controls/TextareaControl";
 import CheckControl from "../controls/CheckContorl";
 import ServerRequest from "../http/ServerRequest";
+import DateControl from "../controls/DateControl";
+
+const required = (
+    <span className="red">
+        <i className="fa-solid fa-circle-exclamation red"></i>{" Задължително поле"}
+    </span>
+);
+const initError = { isWrong: true, message: required };
+// const noError = { isWrong: false, message: "" };
 
 const Application = () => {
     const [damage, setDamage] = useState(false);
@@ -17,8 +24,8 @@ const Application = () => {
         water: [],
         soil: [],
     });
-    const [appearanceDate, setAppearanceDate] = useState(new Date());
-    const [procedureDate, setProcedureDate] = useState(new Date());
+    const [appearanceDate, setAppearanceDate] = useState(null);
+    const [procedureDate, setProcedureDate] = useState(null);
     const [activity, setActivity] = useState("");
     const [applicant, setApplicant] = useState("");
     const [kid, setKid] = useState("");
@@ -33,7 +40,7 @@ const Application = () => {
         water: [],
         soil: [],
     });
-    const [endDate, setEndDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(null);
     const [paidCosts, setPaidCosts] = useState(0);
     const [reimbursedCosts, setReimbursedCosts] = useState(0);
     const [unpaidCosts, setUnpaidCosts] = useState(0);
@@ -45,7 +52,8 @@ const Application = () => {
     const [admCosts, setAdmCosts] = useState(0);
     const [other, setOther] = useState("");
 
-    const [kidMenu, setKidMenu] = useState([]);
+    const [kidMenu, setKidMenu] = useState({});
+    const [activitiesMenu, setActivitiesMenu] = useState({});
 
     let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
 
@@ -53,21 +61,92 @@ const Application = () => {
         financialAssurance[idx] = v;
         setFinancialAssurance([...financialAssurance]);
     };
-    // console.log("kid", kid);
+
     // !!!!!!!!!!!!!!!!!!!!!!!! add errors to some fields
+    const [errors, ] = useState({
+        kid: initError,
+        activity: initError,
+        appearanceDate: initError,
+        applicant: initError,
+        damageList: initError
+    });
+
+    const validate = () => {
+        if (
+            Object.keys(damageList).filter((x) => damageList[x].length > 0).length === 0 && // damageList empty
+            appearanceDate === null && // appearanceDate
+            (!kid || kid === "0") && // kidId !== 0
+            (!activity || activity === "0") && // activity !== 0
+            !applicant // applicant
+        ) {
+            return true;
+        }
+        return false;      
+    };
+    
+    const fillData = () => {
+        if (validate()) return;
+
+        const data = {
+            isDamage: damage,
+            damageList: JSON.stringify(damageList),
+            appearanceDate,
+            procedureDate,
+            activityTypeId: activity,
+            applicant,
+            kidId: kid,
+            courtCases: JSON.stringify(courtCases),
+            preventResultsList: JSON.stringify(preventResultsList),
+            removalResultsList: JSON.stringify(removalResultsList),
+            endDate: endDate || new Date("0001-01-01"),
+            paidCosts,
+            reimbursedCosts,
+            unpaidCosts,
+            paymentSourceOperator,
+            paymentSource: !paymentSourceOperator ? paymentSource : "",
+            financialAssurance: JSON.stringify(financialAssurance),
+            administativeCosts: admCosts,
+            other,
+        };
+
+        return data;
+    };
+
     const SubmitHandler = (e) => {
         e.preventDefault();
 
-        if (damage) {
-            console.log("Записване като причинени щети")
-        } else {
-            console.log("Записване като заплаха щети")
+        const payload = fillData();
+        if (payload) {
+            ServerRequest().post("Main/MainTableInsert", payload, () => {
+                console.log("inserted successfully");
+            });
         }
-    }
 
-    console.log('kidMenu', kidMenu);
+    };
+
     useEffect(() => {
-        ServerRequest().get("Kid/KIDGetAll", {}, setKidMenu);
+        ServerRequest().get("Kid/KIDGetAll", {}, (response) => {
+            const initialValue = {};
+            const result = response.reduce(
+                (previousValue, currentValue) => ({
+                    ...previousValue,
+                    [currentValue.kidId]: currentValue.kidLabelBg,
+                }),
+                initialValue
+            );
+            setKidMenu(result);
+        });
+        ServerRequest().get("ActivityType/ActivitiesGetAll", {}, (response) => {
+            const initialValue = {};
+            const result = response.reduce(
+                (previousValue, currentValue) => ({
+                    ...previousValue,
+                    [currentValue.activityTypeId]: currentValue.activityTypeNameBG,
+                }),
+                initialValue
+            );
+            setActivitiesMenu(result);
+        });
     }, []);
     return (
         <main>
@@ -114,19 +193,18 @@ const Application = () => {
                             damage={isMenace}
                             damageList={damageList}
                             setDamageList={setDamageList}
+                            errors={Object.keys(damageList).filter((x) => damageList[x].length > 0).length === 0 && errors.damageList}
                         />
 
-                        <div className="form-item">
-                            <label htmlFor="start-date">
-                                {`Дата на възникване на ${isMenace} екологични щети и/или датата, на която това е установено`}
-                            </label>
-                            <Calendar
-                                id="start-date"
-                                value={appearanceDate}
-                                setValue={setAppearanceDate}
-                                locale="bg"
-                            />
-                        </div>
+                        <DateControl
+                            title={`Дата на възникване на ${isMenace} екологични щети и/или датата, на която това е установено`}
+                            name="start-date"
+                            value={appearanceDate}
+                            setValue={setAppearanceDate}
+                            locale="bg"
+                            placeholderText="дд/мм/гггг"
+                            errors={appearanceDate === null && errors.appearanceDate}
+                        />
 
                         <SelectControl
                             name="type"
@@ -134,24 +212,22 @@ const Application = () => {
                                 damage ? "са" : "е възникнала"
                             }
                                 ${isMenace} екологични щети`}
-                            listObject={translations.activities}
+                            listObject={activitiesMenu}
                             placeHolder="Изберете"
                             value={activity}
                             setValue={setActivity}
+                            errors={(!activity || activity === "0") && errors.activity}
                         />
 
-                        <div className="form-item">
-                            <label htmlFor="procedure-date">
-                                {`Дата, на която е започнала процедура за предотвратяване или отстраняване на
+                        <DateControl
+                            title={`Дата, на която е започнала процедура за предотвратяване или отстраняване на
                                 ${isMenace} екологични щети`}
-                            </label>
-                            <Calendar
-                                id="procedure-date"
-                                value={procedureDate}
-                                setValue={setProcedureDate}
-                                locale="bg"
-                            />
-                        </div>
+                            name="procedure-date"
+                            value={procedureDate}
+                            setValue={setProcedureDate}
+                            locale="bg"
+                            placeholderText="дд/мм/гггг"
+                        />
 
                         <TextControl
                             name="applicant"
@@ -160,6 +236,7 @@ const Application = () => {
                             placeHolder="Заявител - отговорен оператор, компетентен орган или представител на обществеността"
                             value={applicant}
                             setValue={setApplicant}
+                            errors={!applicant && errors.applicant}
                         />
 
                         <SelectControl
@@ -167,10 +244,11 @@ const Application = () => {
                             title={`Класификационен код по Класификацията на икономическите дейности на
                             Националния статистически институт на дейността, в резултат на която е
                             настъпила екологичната щета`}
-                            listObject={translations.kid}
+                            listObject={kidMenu}
                             placeHolder="Изберете класификационен код по КИД-2008"
                             value={kid}
                             setValue={setKid}
+                            errors={(!kid || kid === "0") && errors.kid}
                         />
 
                         <CourtCases
@@ -198,18 +276,15 @@ const Application = () => {
                             setDamageList={setRemovalResultsList}
                         />
 
-                        <div className="form-item">
-                            <label htmlFor="end-date">
-                                {`Дата на приключване на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети`}
-                            </label>
-                            <Calendar
-                                id="end-date"
-                                value={endDate}
-                                setValue={setEndDate}
-                                locale="bg"
-                                min={procedureDate}
-                            />
-                        </div>
+                        <DateControl
+                            title={`Дата на приключване на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети`}
+                            name="end-date"
+                            value={endDate}
+                            setValue={setEndDate}
+                            min={procedureDate}
+                            locale="bg"
+                            placeholderText="дд/мм/гггг"
+                        />
 
                         <div className="form-item">
                             <label htmlFor="costs">
@@ -324,7 +399,7 @@ const Application = () => {
                             setValue={setOther}
                         />
                         <div>
-                            <input type="submit" value="Вписване" onClick={SubmitHandler}/>
+                            <input type="submit" value="Вписване" onClick={SubmitHandler} />
                         </div>
                     </form>
                 </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SelectControl = ({ name, title, listObject, placeHolder, value, setValue, disabled, ...others  }) => {
+const SelectControl = ({ name, title, listObject, placeHolder, value, setValue, disabled, errors, ...others  }) => {
     const keys = Object.keys(listObject);
     const menu = [
         { value: 0, label: placeHolder },
@@ -28,6 +28,7 @@ const SelectControl = ({ name, title, listObject, placeHolder, value, setValue, 
                         ))}
                 </select>
             </div>
+            {errors && errors.isWrong && <label className="mini red">{errors.message}</label>}
         </div>
     );
 };

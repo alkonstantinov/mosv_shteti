@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TypeDescrElement from "./TypeDescrElement";
 
-const TypeDescription = ({ title, name, damage, damageList, setDamageList, resultsType }) => {
+const TypeDescription = ({ title, name, damage, damageList, setDamageList, resultsType, errors }) => {
     const [typeOption, setTypeOption] = useState("");
 
     let allDamagesList = Object.keys(damageList);
@@ -23,6 +23,7 @@ const TypeDescription = ({ title, name, damage, damageList, setDamageList, resul
                         />
                     ))}
             </div>
+            {errors && errors.isWrong && <label className="mini red">{errors.message}</label>}
         </div>
     );
 };

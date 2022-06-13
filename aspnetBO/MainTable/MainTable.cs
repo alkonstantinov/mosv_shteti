@@ -10,15 +10,15 @@ namespace aspnetBO.MainTable
         public int MainTableId { get; set; }
         public bool isDamage { get; set; }
         public JToken DamageList { get; set; }
-        public DateTime AppearanceDate { get; set; }
-        public DateTime ProcedureDate { get; set; }
+        public DateTimeOffset AppearanceDate { get; set; }
+        public DateTimeOffset ProcedureDate { get; set; }
         public int ActivityTypeId { get; set; }
         public string Applicant { get; set; }
         public int KidId { get; set; }
         public JToken CourtCases { get; set; }
         public JToken PreventResultsList { get; set; }
         public JToken RemovalResultsList { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
         public decimal PaidCosts { get; set; }
         public decimal ReimbursedCosts { get; set; }
         public decimal UnpaidCosts { get; set; }
