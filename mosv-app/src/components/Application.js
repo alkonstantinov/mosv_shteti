@@ -406,7 +406,7 @@ const Application = () => {
                             <input type="submit" value="Вписване" onClick={SubmitHandler} />
                             </div>
                             <div className="col">
-                            <input type="submit" value="Обратно" onClick={() => navigate("/")} />
+                            <button onClick={() => navigate("/")}><i className="fa-solid fa-circle-chevron-left"></i> Обратно</button>
                             </div>
                         </div>
                     </form>

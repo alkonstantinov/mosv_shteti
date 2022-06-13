@@ -337,7 +337,7 @@ returns int
    END
 $$ LANGUAGE 'plpgsql';
 
-create or replace function GetRecordsCount(_IsDamage bool)
+create or replace function GetRecordsCount(_IsDamage boolean)
 returns int
 as $$
 	declare

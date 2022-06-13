@@ -39,6 +39,12 @@ fieldset legend {
   margin: 0;
 }
 
+button {
+  border: 1px solid #7c7c7c;
+  border-radius: 2px;
+  padding: 2px 8px;
+}
+
 .wrapper {
   position: relative;
   display: -webkit-box;

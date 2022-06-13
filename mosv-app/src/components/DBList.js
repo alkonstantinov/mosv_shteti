@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Pagination from "../controls/Pagination";
 import SelectControl from "../controls/SelectControl";
 import ServerRequest from "../http/ServerRequest";
+import { format } from 'date-fns'
 
 const PAGE_SIZE = 3;
 
@@ -52,6 +53,11 @@ const DBList = () => {
             <hr />
             <div className="wrapper">
                 <div className="content">
+                    <div className="row justify-content-end">
+                        <div className="col-2">
+                            <button onClick={() => navigate("/")}><i className="fa-solid fa-circle-chevron-left"></i> Обратно</button>
+                        </div>
+                    </div>
                     <ul className="nav nav-tabs justify-content-center" role="tablist">
                         <li className="nav-item" role="presentation">
                             <Link
@@ -59,7 +65,7 @@ const DBList = () => {
                                 aria-current="page"
                                 to={"/list/damage"}
                                 role="tab"
-                            >
+                                >
                                 Екологична щета
                             </Link>
                         </li>
@@ -68,7 +74,7 @@ const DBList = () => {
                                 className={`nav-link ${id === "menace" ? "active" : ""}`}
                                 to={"/list/menace"}
                                 role="tab"
-                            >
+                                >
                                 Заплаха за екологична щета
                             </Link>
                         </li>
@@ -90,13 +96,13 @@ const DBList = () => {
                         docList.map((doc) => {
                             return (
                                 <div className="row" key={doc.mainTableId}>
-                                    <div className="col">Дата на запис: {doc.createdOn}</div>
-                                    <div className="col">Дата на появяване: {doc.appearanceDate}</div>
+                                    <div className="col">Дата на запис: {format(new Date(doc.createdOn), 'dd/MM/yyyy')}</div>
+                                    <div className="col">Дата на появяване: {format(new Date(doc.appearanceDate), 'dd/MM/yyyy')}</div>
                                     <div className="col">
-                                        Дата на откриване на процедура: {doc.procedureDate}
+                                        Дата на откриване на процедура: {format(new Date(doc.procedureDate), 'dd/MM/yyyy')}
                                     </div>
                                     <div className="col">
-                                        <button>Генериране на справка</button>
+                                        <button onClick={() => navigate(`/generate/${doc.mainTableId}`)}>Генериране на справка</button>
                                     </div>
                                     <hr />
                                 </div>

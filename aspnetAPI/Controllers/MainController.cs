@@ -53,7 +53,8 @@ namespace aspnetAPI.Controllers
         [Route("MainTableGetById")]
         public IActionResult MainTableGetById([FromQuery] int id)
         {
-            return Ok(_mainRepo.MainTableGetById(id));
+            MainTable result = _mainRepo.MainTableGetById(id);
+            return Ok(result);
         }
 
         [HttpPost]

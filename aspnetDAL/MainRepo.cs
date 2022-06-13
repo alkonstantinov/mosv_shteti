@@ -59,7 +59,7 @@ namespace aspnetDAL
 
         public MainTable MainTableGetById(int mainTableId)
         {
-            return dbConnection.QueryFirstOrDefault("MainTableGetById", param: new
+            return dbConnection.QueryFirstOrDefault<MainTable>("MainTableGetById", param: new
             {
                 _maintableid = mainTableId,
             }, commandType: CommandType.StoredProcedure);
