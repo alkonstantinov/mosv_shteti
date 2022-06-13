@@ -168,6 +168,10 @@ fieldset legend {
   margin-top: 15px;
 }
 
+.mb15 {
+  margin-bottom: 15px;
+}
+
 select {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -331,7 +335,10 @@ body {
 }
 
 hr {
-  background-color: #fff;
+  border-top: 1px solid #cecece;
+  width: 100%;
+  margin: 32px 0;
+  /* background-color: #cecece; */
 }
 
 footer {
@@ -423,4 +430,142 @@ hr:not([size]) {
 }
 .react-datepicker__input-container input[type="text"] {
   width: 100% !important;
+}
+
+@-webkit-keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-180px);
+    -ms-transform: translateX(-180px);
+    transform: translateX(-180px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+/* .card-box .card {
+  width: calc(33.33% - 37px); }
+  @media only screen and (max-width: 1150px) {
+    .card-box .card {
+      width: calc(50% - 37px); } }
+  @media only screen and (max-width: 700px) {
+    .card-box .card {
+      margin: 4px;
+      width: calc(100% - 8px); } } */
+
+.card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 455px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  -webkit-box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  margin: 16px;
+  overflow: hidden;
+  z-index: 1; }
+  .card.card-icon {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 40px;
+    color: #000000;
+    min-height: 340px;
+    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), -webkit-box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: -webkit-transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), -webkit-box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), -webkit-box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
+    .card.card-icon:hover {
+      background-color: #f2fff5;
+      -webkit-transform: scale(1.08);
+              transform: scale(1.08);
+      -webkit-box-shadow: 0px 2px 24px rgba(0, 0, 0, 0.16);
+              box-shadow: 0px 2px 24px rgba(0, 0, 0, 0.16); }
+    .card.card-icon h6 {
+      text-align: center;
+      font-weight: 700;
+      margin-top: 10px;
+      -ms-flex-preferred-size: 50%;
+          flex-basis: 50%; }
+    .card.card-icon figure {
+      -ms-flex-preferred-size: 50%;
+          flex-basis: 50%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center; }
+    .card.card-icon.expanded {
+      padding: 64px 32px; }
+      .card.card-icon.expanded p {
+        margin-bottom: 32px;
+        text-align: center; }
+    @media only screen and (max-width: 380px) {
+      .card.card-icon {
+        margin: 4px 0 !important;
+        width: 100% !important; } }
+
+.flex-row-wrap-center {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: unset;
+      -ms-flex-align: unset;
+          align-items: unset;
+  width: 100%; }
+
+.page-link {
+  cursor: pointer;
+}
+
+.pagination {
+  border: 1px solid #29542d;
+  border-radius: 6px;
+}
+
+.text-center {
+  text-align: center;
 }

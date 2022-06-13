@@ -1,15 +1,26 @@
 import React from "react";
 
-const SelectControl = ({ name, title, listObject, placeHolder, value, setValue, disabled, errors, ...others  }) => {
-    const keys = Object.keys(listObject);
-    const menu = [
-        { value: 0, label: placeHolder },
-        ...keys.map((key, idx) => {
-            return { value: idx + 1, label: listObject[key] };
+const SelectControl = ({
+    name,
+    title,
+    listObject,
+    placeHolder,
+    value,
+    setValue,
+    disabled,
+    errors,
+    oneRow,
+    ...others
+}) => {
+    const keys = [
+        ...Object.keys(listObject).map((key) => {
+            return { value: key, label: listObject[key] };
         }),
     ];
+    const menu = placeHolder ? [{ value: 0, label: placeHolder }, ...keys] : [...keys];
+
     return (
-        <div className={`form-item${disabled ? " disabled" : ""}`}>
+        <div className={`form-item${disabled ? " disabled" : ""} ${oneRow ? "roww" : ""}`}>
             <label htmlFor={name}>{title}</label>
             <div className="select">
                 <select

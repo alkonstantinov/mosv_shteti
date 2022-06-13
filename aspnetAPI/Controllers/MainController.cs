@@ -43,6 +43,13 @@ namespace aspnetAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetRecordsCount")]
+        public IActionResult GetRecordsCount([FromQuery] bool isDamage)
+        {
+            return Ok(_mainRepo.GetRecordsCount(isDamage));
+        }
+
+        [HttpGet]
         [Route("MainTableGetById")]
         public IActionResult MainTableGetById([FromQuery] int id)
         {

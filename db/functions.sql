@@ -258,7 +258,7 @@ as $$
 		CreatedOn,
 		ChangedOn 
 	from MainTable as mt
-	where mt.IsDeleted = _IsDeleted and IsDamage = false
+	where mt.IsDeleted = _IsDeleted and mt.IsDamage = false
 	order by mt.ChangedOn asc, mt.MainTableId asc
 	limit _count offset _startIndex - 1;
 $$ LANGUAGE sql;
@@ -337,6 +337,17 @@ returns int
    END
 $$ LANGUAGE 'plpgsql';
 
+create or replace function GetRecordsCount(_IsDamage bool)
+returns int
+as $$
+	declare
+		_count int;
+	BEGIN
+	select into _count COUNT(MainTableId)
+	from MainTable
+	where _IsDamage = IsDamage and IsDeleted = false;
+return _count;
+end $$ LANGUAGE plpgsql;
 
 create or replace function MainTableUpdate(
 	_MainTableId int,

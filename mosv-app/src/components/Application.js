@@ -8,6 +8,7 @@ import TextareaControl from "../controls/TextareaControl";
 import CheckControl from "../controls/CheckContorl";
 import ServerRequest from "../http/ServerRequest";
 import DateControl from "../controls/DateControl";
+import { useNavigate } from "react-router-dom";
 
 const required = (
     <span className="red">
@@ -18,6 +19,7 @@ const initError = { isWrong: true, message: required };
 // const noError = { isWrong: false, message: "" };
 
 const Application = () => {
+    const navigate = useNavigate();
     const [damage, setDamage] = useState(false);
     const [damageList, setDamageList] = useState({
         species: [],
@@ -98,7 +100,7 @@ const Application = () => {
             courtCases: JSON.stringify(courtCases),
             preventResultsList: JSON.stringify(preventResultsList),
             removalResultsList: JSON.stringify(removalResultsList),
-            endDate: endDate || new Date("0001-01-01"),
+            endDate: endDate || new Date("1000-01-01"),
             paidCosts,
             reimbursedCosts,
             unpaidCosts,
@@ -122,6 +124,7 @@ const Application = () => {
             });
         }
 
+        navigate("/");
     };
 
     useEffect(() => {
@@ -151,7 +154,7 @@ const Application = () => {
     return (
         <main>
             <div className="container">
-                <div className="row justify-content-between align-items-center">
+                <div className="row text-center">
                     <h1>Заявяване от РИОСВ на информация за екологични щети</h1>
                 </div>
             </div>
@@ -398,8 +401,13 @@ const Application = () => {
                             value={other}
                             setValue={setOther}
                         />
-                        <div>
+                        <div className="row row-cols-auto">
+                            <div className="col">
                             <input type="submit" value="Вписване" onClick={SubmitHandler} />
+                            </div>
+                            <div className="col">
+                            <input type="submit" value="Обратно" onClick={() => navigate("/")} />
+                            </div>
                         </div>
                     </form>
                 </div>

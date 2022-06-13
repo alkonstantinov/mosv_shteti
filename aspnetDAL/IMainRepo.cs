@@ -7,6 +7,7 @@ namespace aspnetDAL
     {
         List<MainTable> DamageGetAll(int startIndex, int count);
         List<MainTable> MainTableGetAll(int startIndex, int count, bool isDeleted);
+        int GetRecordsCount(bool isDamage);
         MainTable MainTableGetById(int mainTableId);
         int MainTableInsert(MainTable mt);
         void MainTableUpdate(MainTable mt);

@@ -49,6 +49,14 @@ namespace aspnetDAL
             }, commandType: CommandType.StoredProcedure).AsList();
         }
 
+        public int GetRecordsCount(bool isDamage)
+        {
+            return dbConnection.ExecuteScalar<int>("GetRecordsCount", new
+            {
+                _isdamage = isDamage,
+            }, commandType: CommandType.StoredProcedure);
+        }
+
         public MainTable MainTableGetById(int mainTableId)
         {
             return dbConnection.QueryFirstOrDefault("MainTableGetById", param: new
