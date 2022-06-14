@@ -1,4 +1,6 @@
-﻿using aspnetBO.MainTable;
+﻿using aspnetAPI.Tools;
+using aspnetBO;
+using aspnetBO.MainTable;
 using aspnetDAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -55,6 +57,22 @@ namespace aspnetAPI.Controllers
         {
             MainTable result = _mainRepo.MainTableGetById(id);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("TableDownload")]
+        public IActionResult TableDownload([FromBody] StringValue data)
+        {
+            List<string> h = new List<string>();
+            List<List<string>> r = new List<List<string>>();
+            List<string> row = new List<string>();
+            row.Add(data.Value);
+            r.Add(row);
+            string fnm = "report.doc";
+
+            var result = new Exporter(r, h, "Automacially generated table").Export("html");
+
+            return File(result, "application/octet-stream", fnm);
         }
 
         [HttpPost]

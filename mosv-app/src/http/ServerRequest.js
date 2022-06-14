@@ -9,6 +9,12 @@ const ServerRequest = () => {
         timeout: 10 * 60 * 1000,
     };
 
+    const settingsForFile = {
+        baseURL: baseUrl,
+        headers: { "Access-Control-Allow-Origin": "*" },
+        timeout: 10 * 60 * 1000,
+        responseType: "blob",
+    };
 
     return {
         get: (url, getParams, callBack) => {
@@ -49,6 +55,15 @@ const ServerRequest = () => {
                 })
                 // .catch(handleError);
         },
+        postForFile: (url, postParams, callBack) => {
+            Axios.create(settingsForFile)
+                .post(url, postParams)
+                .then((r) => {
+                    if (callBack) {
+                        callBack(r);
+                    }
+                })
+            },
         put: (url, putParams, callBack) => {
             Axios.create(settings)
                 .put(url, putParams)

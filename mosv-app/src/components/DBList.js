@@ -6,14 +6,16 @@ import ServerRequest from "../http/ServerRequest";
 import { format } from 'date-fns'
 
 const PAGE_SIZE = 3;
+const MAX_COUNT = 1000000;
+const START_INDEX = 1;
 
 const DBList = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [docList, setDocList] = useState([]);
-    const [startIndex, setStartIndex] = useState(1);
+    const [startIndex, setStartIndex] = useState(START_INDEX);
     const [pageSize, setPageSize] = useState(PAGE_SIZE);
-    const [totalRecs, setTotalRecs] = useState(1);
+    const [totalRecs, setTotalRecs] = useState(START_INDEX);
     const pageSizeMenu = { 3: "3", 5: "5", 10: "10", 20: "20", 50: "50" };
 
     const askServer = useCallback((id, pageSize, startIndex) => {
@@ -23,6 +25,11 @@ const DBList = () => {
         } else if (id === "damage") {
             ServerRequest().get("Main/DamageGetAll", { startIndex: startIndex, count: pageSize }, setDocList);
             ServerRequest().get("Main/GetRecordsCount", { isDamage: true }, setTotalRecs);
+        } else {
+            ServerRequest().get("Main/MainTableGetAll", { startIndex: START_INDEX, count: MAX_COUNT }, (r) => {
+                setTotalRecs(r.length);
+            });
+            ServerRequest().get("Main/MainTableGetAll", { startIndex: startIndex, count: pageSize }, setDocList);
         }
     }, []);
 
@@ -30,19 +37,11 @@ const DBList = () => {
         askServer(id, pageSize, startIndex);
     }, [pageSize, startIndex]);
 
-    useEffect(() => {
-        if (id && id !== "damage") {
-            navigate("/list/menace");
-            setPageSize(PAGE_SIZE);
-        } else {
-            navigate("/list/damage");
-            setPageSize(PAGE_SIZE);
-        }
-
-        askServer(id, PAGE_SIZE, 1);
+    useEffect(() => {        
+        setPageSize(PAGE_SIZE);
+        askServer(id, PAGE_SIZE, START_INDEX);
     }, [id]);
 
-    console.log(docList);
     return (
         <main>
             <div className="container">
@@ -61,7 +60,17 @@ const DBList = () => {
                     <ul className="nav nav-tabs justify-content-center" role="tablist">
                         <li className="nav-item" role="presentation">
                             <Link
-                                className={`nav-link ${!id || id === "damage" ? "active" : ""}`}
+                                className={`nav-link ${!id ? "active" : ""}`}
+                                aria-current="page"
+                                to={"/list"}
+                                role="tab"
+                                >
+                                Общо
+                            </Link>
+                        </li>
+                        <li className="nav-item" role="presentation">
+                            <Link
+                                className={`nav-link ${id === "damage" ? "active" : ""}`}
                                 aria-current="page"
                                 to={"/list/damage"}
                                 role="tab"
