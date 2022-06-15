@@ -17,6 +17,8 @@ const DBList = () => {
     const [pageSize, setPageSize] = useState(PAGE_SIZE);
     const [totalRecs, setTotalRecs] = useState(START_INDEX);
     const pageSizeMenu = { 3: "3", 5: "5", 10: "10", 20: "20", 50: "50" };
+    
+    const [kidMenu, setKidMenu] = useState([]);
 
     const askServer = useCallback((id, pageSize, startIndex) => {
         if (id === "menace") {
@@ -37,10 +39,19 @@ const DBList = () => {
         askServer(id, pageSize, startIndex);
     }, [pageSize, startIndex]);
 
-    useEffect(() => {        
+    useEffect(() => {
+        askServer(id, pageSize, START_INDEX);
+    }, [pageSize]);
+
+    useEffect(() => {   
         setPageSize(PAGE_SIZE);
+        setStartIndex(START_INDEX);
         askServer(id, PAGE_SIZE, START_INDEX);
     }, [id]);
+
+    useEffect(() => {
+        ServerRequest().get("Kid/KIDGetAll", {}, setKidMenu);
+    }, []);
 
     return (
         <main>
@@ -100,17 +111,39 @@ const DBList = () => {
                             />
                         </div>
                     </div>
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-2">
+                            <b>Дата на запис:</b>
+                        </div>
+                        <div className="col-xs-12 col-sm-2">
+                            <b>Дата на появяване: </b>
+                        </div>
+                        <div className="col-xs-12 col-sm-2">
+                            <b>Дата на откриване на процедура: </b>
+                        </div>
+                        <div className="col-xs-12 col-sm-3">
+                            <b>Класификационен код на дейността:</b>
+                        </div>
+                        <div className="col-xs-12 col-sm-3">
+                            {" "} 
+                        </div>
+                    </div>
+                        <hr />
                     {docList &&
                         docList.length > 0 &&
                         docList.map((doc) => {
+                            const kid = doc && kidMenu && kidMenu.find((x) => x.kidId === doc.kidId);
                             return (
                                 <div className="row" key={doc.mainTableId}>
-                                    <div className="col">Дата на запис: {format(new Date(doc.createdOn), 'dd/MM/yyyy')}</div>
-                                    <div className="col">Дата на появяване: {format(new Date(doc.appearanceDate), 'dd/MM/yyyy')}</div>
-                                    <div className="col">
-                                        Дата на откриване на процедура: {format(new Date(doc.procedureDate), 'dd/MM/yyyy')}
+                                    <div className="col-xs-12 col-sm-2">{format(new Date(doc.createdOn), 'dd/MM/yyyy')}</div>
+                                    <div className="col-xs-12 col-sm-2">{format(new Date(doc.appearanceDate), 'dd/MM/yyyy')}</div>
+                                    <div className="col-xs-12 col-sm-2">
+                                        {format(new Date(doc.procedureDate), 'dd/MM/yyyy')}
                                     </div>
-                                    <div className="col">
+                                    <div className="col-xs-12 col-sm-3">
+                                        {kid && kid.kidLabelBg}
+                                    </div>
+                                    <div className="col-xs-12 col-sm-3">
                                         <button onClick={() => navigate(`/generate/${doc.mainTableId}`)}>Генериране на справка</button>
                                     </div>
                                     <hr />

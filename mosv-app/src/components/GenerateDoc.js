@@ -10,7 +10,8 @@ const GenerateDoc = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState(null);
-    const [activitiesMenu, setActivitiesMenu] = useState([]);
+    // const [activitiesMenu, setActivitiesMenu] = useState([]);
+    const [kidMenu, setKidMenu] = useState([]);
     const [valueEditor, setValueEditor] = useState();
 
     useEffect(() => {
@@ -20,7 +21,8 @@ const GenerateDoc = () => {
     }, [id]);
 
     useEffect(() => {
-        ServerRequest().get("ActivityType/ActivitiesGetAll", {}, setActivitiesMenu);
+        ServerRequest().get("Kid/KIDGetAll", {}, setKidMenu);
+        // ServerRequest().get("ActivityType/ActivitiesGetAll", {}, setActivitiesMenu);
     }, []);
 
     const download = (value) => {
@@ -31,16 +33,17 @@ const GenerateDoc = () => {
             link.setAttribute('download', `${filename}`);
             document.body.appendChild(link);
             link.click();
-            // console.log("value", value, "res", res);
         })
     };
 
     const dList = data && JSON.parse(data.damageList);
-    const activityType =
-        data && activitiesMenu && activitiesMenu.find((x) => x.activityTypeId === data.activityTypeId);
+    // const activityType =
+    //     data && activitiesMenu && activitiesMenu.find((x) => x.activityTypeId === data.activityTypeId);
+    const kid =
+        data && kidMenu && kidMenu.find((x) => x.kidId === data.kidId);
     const court = data && JSON.parse(data.courtCases);
     const removalProcedure = data && JSON.parse(data.removalResultsList);
-
+    
     const tableFilled = data && dList && ReactDOMServer.renderToStaticMarkup(
         <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
             <table style={{ width: "100%", marginBottom: "1rem", color: "#212529" }}>
@@ -85,7 +88,7 @@ const GenerateDoc = () => {
                     <tr>
                         <th scope="row">2.</th>
                         <td><strong><em>Класификационен код на дейността на отговорното юридическо лице/а</em></strong></td>
-                        <td>{activityType && activityType.activityTypeNameBG}</td>
+                        <td>{kid && kid.kidLabelBg}</td>
                     </tr>
                     <tr>
                         <th scope="row">3.</th>
@@ -133,7 +136,7 @@ const GenerateDoc = () => {
             </table>
         </div>
     );
-
+    
     return (
         <main>
             <div className="container">
