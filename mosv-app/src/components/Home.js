@@ -41,7 +41,7 @@ const Home = () => {
                         <figure>
                             <i className="fa-solid fa-clipboard-list fa-5x"></i>
                         </figure>
-                        <h6>Списък със подадени заявления</h6>
+                        <h6>Списък с подадени заявления</h6>
                         <hr />
                         <p>Списък с подадени заявления по тип и подредени по дата на подаване</p>
                         <button className="btn-round btn-border-black">Към списъка</button>

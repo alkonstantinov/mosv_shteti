@@ -122,9 +122,9 @@ const Application = () => {
             ServerRequest().post("Main/MainTableInsert", payload, () => {
                 console.log("inserted successfully");
             });
+            navigate("/");
         }
 
-        navigate("/");
     };
 
     useEffect(() => {

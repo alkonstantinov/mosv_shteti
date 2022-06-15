@@ -57,7 +57,7 @@ const DBList = () => {
         <main>
             <div className="container">
                 <div className="row text-center">
-                    <h1>Заявяване от РИОСВ на информация за екологични щети</h1>
+                    <h1>Списък с подадени заявления</h1>
                 </div>
             </div>
             <hr />
@@ -113,10 +113,10 @@ const DBList = () => {
                     </div>
                     <div className="row">
                         <div className="col-xs-12 col-sm-2">
-                            <b>Дата на запис:</b>
+                            <b>Дата на последна промяна:</b>
                         </div>
                         <div className="col-xs-12 col-sm-2">
-                            <b>Дата на появяване: </b>
+                            <b>Дата на появяване на заплахата/щетата: </b>
                         </div>
                         <div className="col-xs-12 col-sm-2">
                             <b>Дата на откриване на процедура: </b>
@@ -135,7 +135,7 @@ const DBList = () => {
                             const kid = doc && kidMenu && kidMenu.find((x) => x.kidId === doc.kidId);
                             return (
                                 <div className="row" key={doc.mainTableId}>
-                                    <div className="col-xs-12 col-sm-2">{format(new Date(doc.createdOn), 'dd/MM/yyyy')}</div>
+                                    <div className="col-xs-12 col-sm-2">{format(new Date(doc.changedOn), 'dd/MM/yyyy')}</div>
                                     <div className="col-xs-12 col-sm-2">{format(new Date(doc.appearanceDate), 'dd/MM/yyyy')}</div>
                                     <div className="col-xs-12 col-sm-2">
                                         {format(new Date(doc.procedureDate), 'dd/MM/yyyy')}
