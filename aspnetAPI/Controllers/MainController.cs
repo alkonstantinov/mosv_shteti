@@ -68,9 +68,9 @@ namespace aspnetAPI.Controllers
             List<string> row = new List<string>();
             row.Add(data.Value);
             r.Add(row);
-            string fnm = "report.doc";
+            string fnm = "report.docx";
 
-            var result = new Exporter(r, h, "Automacially generated table").Export("html");
+            var result = new Exporter(r, h, "Automacially generated table").Export("xhtml");
 
             return File(result, "application/octet-stream", fnm);
         }

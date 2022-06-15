@@ -29,19 +29,22 @@ namespace aspnetAPI.Tools
                 case "excel": return ExportExcel();
                 case "csv": return ExportCSV();
                 case "html": return ExportHTML();
+                case "xhtml": return ExportHTML("docx");
                 case "word": return CreateWordprocessingDocument();
                 default: return null;
             }
         }
 
-        public byte[] ExportHTML()
+        public byte[] ExportHTML(string ft = "doc")
         {
             StringBuilder text = new StringBuilder();
+            text.AppendLine("<html><head><style>");
+
             string style = "";
             style += "table, thead, tbody, th, tr, td { border: 1px solid #6c757d; border-collapse: collapse } ";
             style += "table:not([cellpadding]) td, table:not([cellpadding]) th { padding: 0.4rem; } ";
             style += "table tr { vertical-align: top; }";
-            text.AppendLine("<html><head><style>");
+
             text.AppendLine(style);
             text.AppendLine("</style></head><body><header><h2>");
             text.AppendLine(_title);
@@ -62,12 +65,54 @@ namespace aspnetAPI.Tools
             }
             text.AppendLine("</main></body></html>");
 
+            if (ft == "doc")
+            {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                return Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding(1251), Encoding.UTF8.GetBytes(text.ToString()));
+                //return Encoding.ASCII.GetBytes(text.ToString());
+            }
+            else
+            {
+                MainDocumentPart mainPart;
+                AlternativeFormatImportPart chunk;
+                AltChunk altChunk;
 
-            return Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding(1251), Encoding.UTF8.GetBytes(text.ToString()));
-            //return Encoding.ASCII.GetBytes(text.ToString());
+                string altChunkID = "AltChunkId1";
 
+                var fnm = Path.GetTempFileName();
+
+                using (WordprocessingDocument myDoc = WordprocessingDocument.Create(fnm, WordprocessingDocumentType.Document))
+                {
+                    mainPart = myDoc.MainDocumentPart;
+
+                    if (mainPart == null)
+                    {
+                        mainPart = myDoc.AddMainDocumentPart();
+                        new Document(new Body()).Save(mainPart);
+                    }
+
+                    chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Xhtml, altChunkID);
+
+                    using (Stream chunkStream = chunk.GetStream(FileMode.Create, FileAccess.Write))
+                    {
+                        using (StreamWriter stringStream = new StreamWriter(chunkStream))
+                        {
+                            stringStream.Write(@text);
+                        }
+                    }
+
+                    altChunk = new AltChunk();
+                    altChunk.Id = altChunkID;
+                    mainPart.Document.Body.InsertAt(altChunk, 0); // Of, AltChunk)[altChunk, 0];
+                    mainPart.Document.Save();
+                }
+
+                // if ms instead of fnm =>  return GetFileAsBytes(ms)
+                var bytes = File.ReadAllBytes(fnm);
+                File.Delete(fnm);
+                return bytes;
+            }
         }
 
         public byte[] CreateWordprocessingDocument()
