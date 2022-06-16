@@ -75,10 +75,10 @@ const Application = () => {
 
     const validate = () => {
         if (
-            Object.keys(damageList).filter((x) => damageList[x].length > 0).length === 0 && // damageList empty
-            appearanceDate === null && // appearanceDate
-            (!kid || kid === "0") && // kidId !== 0
-            (!activity || activity === "0") && // activity !== 0
+            Object.keys(damageList).filter((x) => damageList[x].length > 0).length === 0 || // damageList empty
+            appearanceDate === null || // appearanceDate
+            (!kid || kid === "0") || // kidId !== 0
+            (!activity || activity === "0") || // activity !== 0
             !applicant // applicant
         ) {
             return true;
