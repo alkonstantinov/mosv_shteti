@@ -10,7 +10,7 @@ export const AppRoute = () => {
         <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/application" element={<Application />} />
+            <Route path="/application/:isDamage" element={<Application />} />
             <Route path="/list" element={<DBList />} >
                 <Route path=":id" element={<DBList />} />
             </Route>

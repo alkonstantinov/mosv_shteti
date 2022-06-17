@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
     const divStyle = {
         visibility: "visible",
-        maxWidth: "30%",
+        // maxWidth: "30%",
         animationDuration: "0.4s",
         animationDelay: "0s",
         animationName: "fadeInLeft",
@@ -18,30 +18,46 @@ const Home = () => {
                 </div>
             </div>
             <hr />
-            <div className={"wrapper"}>
+            <div className="wrapper">
                 <div className="flex-row-wrap-center card-box">
                     <Link
                         className="card card-icon expanded fadeInLeft"
                         style={divStyle}
-                        to={`/application`}
+                        to={`/application/menace`}
+                        key={`/application`}
                     >
                         <figure>
                             <i className="fa-brands fa-wpforms fa-5x"></i>
                         </figure>
-                        <h6>Заявяване от РИОСВ на информация за екологични щети</h6>
+                        <h6>Вписване на информация за непосредствена заплаха за екологични щети</h6>
                         <hr />
-                        <p>Попълване на ново заявление за екологични щети от РИОСВ</p>
+                        <p>Заявяване от РИОСВ на информация за непосредствена заплаха за екологични щети</p>
+                        <button className="btn-round btn-border-black">Към формуляра</button>
+                    </Link>
+                    <Link
+                        className="card card-icon expanded fadeInLeft"
+                        style={divStyle}
+                        to={`/application`}
+                        key={`/application/damage`}
+                    >
+                        <figure>
+                            <i className="fa-brands fa-wpforms fa-5x"></i>
+                        </figure>
+                        <h6>Вписване на информация за нови екологични щети</h6>
+                        <hr />
+                        <p>Заявяване от РИОСВ на информация за причинени екологични щети</p>
                         <button className="btn-round btn-border-black">Към формуляра</button>
                     </Link>
                     <Link
                         className="card card-icon expanded fadeInLeft"
                         style={divStyle}
                         to={`/list`}
+                        key={`/list`}
                     >
                         <figure>
                             <i className="fa-solid fa-clipboard-list fa-5x"></i>
                         </figure>
-                        <h6>Списък с подадени заявления</h6>
+                        <h6>Списък с вписани заявления</h6>
                         <hr />
                         <p>Списък с подадени заявления по тип и подредени по дата на подаване</p>
                         <button className="btn-round btn-border-black">Към списъка</button>

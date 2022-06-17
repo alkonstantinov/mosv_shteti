@@ -8,7 +8,7 @@ import TextareaControl from "../controls/TextareaControl";
 import CheckControl from "../controls/CheckContorl";
 import ServerRequest from "../http/ServerRequest";
 import DateControl from "../controls/DateControl";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const required = (
     <span className="red">
@@ -19,8 +19,9 @@ const initError = { isWrong: true, message: required };
 // const noError = { isWrong: false, message: "" };
 
 const Application = () => {
+    const { isDamage } = useParams();
     const navigate = useNavigate();
-    const [damage, setDamage] = useState(false);
+    const [damage, ] = useState(isDamage === "menace" ? false : true);
     const [damageList, setDamageList] = useState({
         species: [],
         water: [],
@@ -163,7 +164,7 @@ const Application = () => {
                 <div className="content">
                     <form action="">
                         {/* IMPORTANT When disable input, put class .disabled in the .form-item class */}
-                        <div className="form-check form-check-inline">
+                        {/* <div className="form-check form-check-inline">
                             <input
                                 className="form-check-input"
                                 type="radio"
@@ -188,7 +189,7 @@ const Application = () => {
                             <label htmlFor="damage" className="form-check-label">
                                 Причинени екологични щети
                             </label>
-                        </div>
+                        </div> */}
 
                         <TypeDescription
                             name="type"

@@ -11,9 +11,14 @@ form label {
   font-size: 1.5rem;
 }
 
-@media only screen and (max-width: 1010px) {
+@media only screen and (max-width: 1150px) {
   form label {
-      font-size: 1.15rem;
+      font-size: 1.4rem;
+  }
+}
+@media only screen and (max-width: 700px) {
+  form label {
+      font-size: 1.25rem;
   }
 }
 
@@ -77,6 +82,15 @@ button {
   z-index: 1;
   padding: 2%;
 }
+@media only screen and (max-width: 1150px) {
+  .content {
+    width: calc(90% - 37px); } }
+@media only screen and (max-width: 700px) {
+  .content {
+    width: calc(100% - 37px); } }
+@media only screen and (max-width: 625px) {
+  .content {
+    width: calc(100% - 8px); } }
 
 
 .form-item {
@@ -473,15 +487,19 @@ hr:not([size]) {
   animation-name: fadeInLeft;
 }
 
-/* .card-box .card {
-  width: calc(33.33% - 37px); }
+.card-box .card {
+  width: calc(33.33% - 50px); }
   @media only screen and (max-width: 1150px) {
     .card-box .card {
       width: calc(50% - 37px); } }
   @media only screen and (max-width: 700px) {
     .card-box .card {
       margin: 4px;
-      width: calc(100% - 8px); } } */
+      width: calc(100% - 16px); } }
+  @media only screen and (max-width: 625px) {
+    .card-box .card {
+      margin: 4px;
+      width: calc(100% - 8px); } }
 
 .card {
   display: -webkit-box;
