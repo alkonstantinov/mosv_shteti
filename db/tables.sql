@@ -11,6 +11,16 @@ create table Kid
 	KidSelectable boolean
 );
 
+-- RIOSV
+drop table if exists RIOSV CASCADE;
+create table RIOSV
+(
+	RIOSVId int not null primary key,
+	RIOSVKey citext not null,
+	RIOSVNameBG character varying unique not null,
+	RIOSVNameEn character varying
+);
+
 -- ActivityType
 drop table if exists ActivityType CASCADE;
 create table ActivityType

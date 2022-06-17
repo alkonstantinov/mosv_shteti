@@ -18,6 +18,24 @@ $$ LANGUAGE sql;
 
 -- select * from ActivitiesGetAll();
 
+-- RIOSVGetAll
+create or replace function RIOSVGetAll ()
+returns Table(
+	RIOSVId int,
+	RIOSVKey character varying,
+	RIOSVNameBG character varying,
+	RIOSVNameEn character varying
+)
+as $$
+	select
+		RIOSVId,
+		RIOSVKey,
+		RIOSVNameBG,
+		RIOSVNameEn
+	from RIOSV
+	order by RIOSVId;
+$$ LANGUAGE sql;
+
 -- kid-2008 const
 create or replace function KIDGetAll ()
 returns Table(
