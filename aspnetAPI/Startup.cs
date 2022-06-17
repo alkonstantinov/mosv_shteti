@@ -30,6 +30,7 @@ namespace aspnetAPI
             services.AddRazorPages();
             services.AddScoped<IKidRepo, KidRepo>();
             services.AddScoped<IActivityTypeRepo, ActivityTypeRepo>();
+            services.AddScoped<IRiosvRepo, RiosvRepo>();
             services.AddScoped<IMainRepo, MainRepo>();
 
             services.AddCors();

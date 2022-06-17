@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import TypeDescrElement from "./TypeDescrElement";
 
-const TypeDescription = ({ title, name, damage, damageList, setDamageList, resultsType, errors }) => {
+const TypeDescription = ({ title, name, damage, damageList, setDamageList, resultsType, errors, disabled }) => {
     const [typeOption, setTypeOption] = useState("");
 
     let allDamagesList = Object.keys(damageList);
     return (
-        <div className="form-item">
+        <div className={`form-item ${disabled ? "disabled" : ""}`}>
             <label htmlFor={name}>{title}</label>
             <div className="row">
                 {allDamagesList.length > 0 &&
@@ -20,6 +20,7 @@ const TypeDescription = ({ title, name, damage, damageList, setDamageList, resul
                             isResults={resultsType}
                             allDamagesList={damageList}
                             setAllDamagesList={setDamageList}
+                            disabled={disabled}
                         />
                     ))}
             </div>

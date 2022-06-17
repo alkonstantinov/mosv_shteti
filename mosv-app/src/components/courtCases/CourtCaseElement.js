@@ -4,7 +4,7 @@ import TextControl from "../../controls/TextControl";
 const emptyField = { isWrong: true, message: "Моля попълнете полето!" };
 const okField = { isWrong: false, message: "" };
 
-const CourtCaseElement = ({ name, addToList }) => {
+const CourtCaseElement = ({ name, addToList, disabled}) => {
     const [caseDescr, setCaseDescr] = useState("");
     const [complainant, setComplainant] = useState("");
     const [caseResult, setCaseResult] = useState("");
@@ -44,31 +44,34 @@ const CourtCaseElement = ({ name, addToList }) => {
                     <TextControl
                         name={`${name}-descr`}
                         title={"Описание на образуваните досъдебни производства или съдебни дела"}
-                        placeHolder="Образувани производства или дела"
+                        placeHolder="Въведете описание на образувани производства или дела"
                         value={caseDescr}
                         setValue={setCaseDescr}
                         mini
                         errors={caseDescrError}
+                        disabled={disabled}
                     />
 
                     <TextControl
                         name={`${name}-complainant`}
                         title={"Ищци"}
-                        placeHolder="Ищци по образуваните производства или дела"
+                        placeHolder="Въведете ищци по образуваните производства или дела"
                         value={complainant}
                         setValue={setComplainant}
                         mini
                         errors={complainantError}
+                        disabled={disabled}
                     />
 
                     <TextControl
                         name={`${name}-results`}
                         title={"Резултат от досъдебните производства или съдебните дела"}
-                        placeHolder="Резултати от досъдебните производства или съдебните дела"
+                        placeHolder="Въведете резултати от досъдебните производства или съдебните дела"
                         value={caseResult}
                         setValue={setCaseResult}
                         mini
                         errors={caseResultError}
+                        disabled={disabled}
                     />
                 </div>
                 <div className="col-2" style={{ textAlign: "center" }}>

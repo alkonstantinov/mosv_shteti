@@ -9,6 +9,7 @@ const TypeDescrElement = ({
     setAllDamagesList,
     allDamagesList,
     isResults,
+    disabled
 }) => {
     const [description, setDescription] = useState("");
     const [damageList, setDamageList] = useState(allDamagesList[option]);
@@ -54,7 +55,7 @@ const TypeDescrElement = ({
     return (
         <div id="type-descr" className="col-xs-12 col-md-4">
             {textElement}{" "}
-            {typeOption === option ? (
+            {typeOption === option && !disabled ? (
                 <>
                     <i
                         className="fa-solid fa-circle-xmark fa-lg"
@@ -70,7 +71,7 @@ const TypeDescrElement = ({
                                     id="type-descr"
                                     name="type-descr"
                                     rows="3"
-                                    placeholder={`Описание${
+                                    placeholder={`Въведете описание${
                                         isResults ? isResults : ""
                                     } на ${damage} екологични щети ${textElement}`}
                                     value={description}
@@ -103,20 +104,20 @@ const TypeDescrElement = ({
                     {damageList.map((item, index) => (
                         <li key={index}>
                             {item}{" "}
-                            <i
+                            {!disabled && <i
                                 className="fa-solid fa-file-pen"
                                 onClick={() => editItem(index, option)}
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
                                 title="Промяна"
-                            ></i>{" "}
-                            <i
+                            ></i>}{" "}
+                            {!disabled && <i
                                 className="fa-solid fa-file-circle-minus"
                                 onClick={() => removeItem(index)}
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
                                 title="Изтриване"
-                            ></i>
+                            ></i>}
                         </li>
                     ))}
                 </ul>

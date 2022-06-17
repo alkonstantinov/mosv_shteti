@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CheckControl from "../../controls/CheckContorl";
 import CourtCaseElement from "./CourtCaseElement";
 
-const CourtCases = ({ name, title, checkLabel = "Да", courtCases, setCourtCases }) => {
+const CourtCases = ({ name, title, checkLabel = "Да", courtCases, setCourtCases, disabled }) => {
     const [hasCourtCases, setHasCourtCases] = useState(courtCases.length > 0);
 
     const addToList = (caseDescr, complainant, caseResult) => {
@@ -18,13 +18,14 @@ const CourtCases = ({ name, title, checkLabel = "Да", courtCases, setCourtCase
         setCourtCases([...courtCases]);
     };
     return (
-        <div className="form-item">
+        <div className={`form-item${disabled ? " disabled" : ""}`}>
             <label htmlFor={name}>{title}</label>
             <CheckControl
                 name={`check_${name}`}
                 label={checkLabel}
                 value={hasCourtCases}
                 setValue={setHasCourtCases}
+                disabled={disabled}
             />
             {hasCourtCases && courtCases.length > 0 && (
                 <div class="table-responsive">
@@ -57,7 +58,7 @@ const CourtCases = ({ name, title, checkLabel = "Да", courtCases, setCourtCase
                     </table>
                 </div>
             )}
-            {hasCourtCases && <CourtCaseElement name={name} addToList={addToList} />}
+            {hasCourtCases && <CourtCaseElement name={name} addToList={addToList} disabled={disabled}/>}
         </div>
     );
 };

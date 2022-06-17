@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
+import ReactDOMServer from "react-dom/server";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Pagination from "../controls/Pagination";
 import SelectControl from "../controls/SelectControl";
 import ServerRequest from "../http/ServerRequest";
 import { format } from 'date-fns'
+import TableData from "./tableData";
 
 const PAGE_SIZE = 3;
 const MAX_COUNT = 1000000;
@@ -34,6 +36,21 @@ const DBList = () => {
             ServerRequest().get("Main/MainTableGetAll", { startIndex: startIndex, count: pageSize }, setDocList);
         }
     }, []);
+
+    const download = (id) => {
+        ServerRequest().get("Main/MainTableGetById", { id }, (data) => {
+            const tableFilled = { value: ReactDOMServer.renderToStaticMarkup(<TableData data={data} kidMenu={kidMenu}/>) };
+            
+            ServerRequest().postForFile(`Main/TableDownload`, tableFilled, (res) => {
+                const filename = res.headers["content-disposition"].split('; ')[1].split("filename=")[1];
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(new Blob([res.data], { type: 'application/octet-stream' }));
+                link.setAttribute('download', `${filename}`);
+                document.body.appendChild(link);
+                link.click();
+            });
+    });
+    };
 
     useEffect(() => {
         askServer(id, pageSize, startIndex);
@@ -144,7 +161,14 @@ const DBList = () => {
                                         {kid && kid.kidLabelBg}
                                     </div>
                                     <div className="col-xs-12 col-sm-3">
-                                        <button onClick={() => navigate(`/generate/${doc.mainTableId}`)}>Генериране на справка</button>
+                                        <div className="row">
+                                            <div className="col">
+                                                <button onClick={() => download(doc.mainTableId)}><i className="fa-solid fa-file-arrow-down"></i>  Сваляне на справка</button>
+                                            </div>
+                                            <div className="col">
+                                                <button onClick={() => navigate(`/generate/${doc.mainTableId}`)}><i className="fa-solid fa-file-import"></i> Редакция на справка</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr />
                                 </div>

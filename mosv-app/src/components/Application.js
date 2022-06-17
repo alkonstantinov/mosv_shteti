@@ -19,9 +19,9 @@ const initError = { isWrong: true, message: required };
 // const noError = { isWrong: false, message: "" };
 
 const Application = () => {
-    const { isDamage } = useParams();
+    const { isDamaged } = useParams();
     const navigate = useNavigate();
-    const [damage, ] = useState(isDamage === "menace" ? false : true);
+    const [damage, ] = useState(isDamaged === "damage" ? true : false);
     const [damageList, setDamageList] = useState({
         species: [],
         water: [],
@@ -57,6 +57,7 @@ const Application = () => {
 
     const [kidMenu, setKidMenu] = useState({});
     const [activitiesMenu, setActivitiesMenu] = useState({});
+    const [riosvMenu, setRiosvMenu] = useState({})
 
     let isMenace = !damage ? "непосредствената заплаха за" : "причинените";
 
@@ -80,7 +81,7 @@ const Application = () => {
             appearanceDate === null || // appearanceDate
             (!kid || kid === "0") || // kidId !== 0
             (!activity || activity === "0") || // activity !== 0
-            !applicant // applicant
+            (!applicant || applicant === "0") // applicant
         ) {
             return true;
         }
@@ -151,12 +152,23 @@ const Application = () => {
             );
             setActivitiesMenu(result);
         });
+        ServerRequest().get("Riosv/RIOSVGetAll", {}, (response) => {
+            const initialValue = {};
+            const result = response.reduce(
+                (previousValue, currentValue) => ({
+                    ...previousValue,
+                    [currentValue.riosvId]: currentValue.riosvNameBG,
+                }),
+                initialValue
+            );
+            setRiosvMenu(result);
+        });
     }, []);
     return (
         <main>
             <div className="container">
                 <div className="row text-center">
-                    <h1>Заявяване от РИОСВ на информация за екологични щети</h1>
+                    <h1>{`Заявяване от РИОСВ на информация за ${!damage ? "непосредствена заплаха за" : "причинени"} екологични щети`}</h1>
                 </div>
             </div>
             <hr />
@@ -217,7 +229,7 @@ const Application = () => {
                             }
                                 ${isMenace} екологични щети`}
                             listObject={activitiesMenu}
-                            placeHolder="Изберете"
+                            placeHolder="Изберете дейност"
                             value={activity}
                             setValue={setActivity}
                             errors={(!activity || activity === "0") && errors.activity}
@@ -233,11 +245,12 @@ const Application = () => {
                             placeholderText="дд/мм/гггг"
                         />
 
-                        <TextControl
+                        <SelectControl
                             name="applicant"
                             title={`Заявител на процедурата по предотвратяване или отстраняване на ${isMenace} екологични щети - отговорен
                             оператор, компетентен орган или представител на обществеността`}
-                            placeHolder="Заявител - отговорен оператор, компетентен орган или представител на обществеността"
+                            listObject={riosvMenu}
+                            placeHolder="Изберете регионална инспекция"
                             value={applicant}
                             setValue={setApplicant}
                             errors={!applicant && errors.applicant}

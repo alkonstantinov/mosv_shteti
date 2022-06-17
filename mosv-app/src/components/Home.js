@@ -24,7 +24,7 @@ const Home = () => {
                         className="card card-icon expanded fadeInLeft"
                         style={divStyle}
                         to={`/application/menace`}
-                        key={`/application`}
+                        key={`/application/menace`}
                     >
                         <figure>
                             <i className="fa-brands fa-wpforms fa-5x"></i>
@@ -37,13 +37,13 @@ const Home = () => {
                     <Link
                         className="card card-icon expanded fadeInLeft"
                         style={divStyle}
-                        to={`/application`}
+                        to={`/application/damage`}
                         key={`/application/damage`}
                     >
                         <figure>
                             <i className="fa-brands fa-wpforms fa-5x"></i>
                         </figure>
-                        <h6>Вписване на информация за нови екологични щети</h6>
+                        <h6>Вписване на информация за причинени екологични щети</h6>
                         <hr />
                         <p>Заявяване от РИОСВ на информация за причинени екологични щети</p>
                         <button className="btn-round btn-border-black">Към формуляра</button>
