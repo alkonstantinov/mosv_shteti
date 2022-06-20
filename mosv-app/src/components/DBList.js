@@ -81,7 +81,7 @@ const DBList = () => {
             <div className="wrapper">
                 <div className="content">
                     <div className="row justify-content-end">
-                        <div className="col-2">
+                        <div className="col col-sm-2">
                             <button onClick={() => navigate("/")}><i className="fa-solid fa-circle-chevron-left"></i> Обратно</button>
                         </div>
                     </div>
